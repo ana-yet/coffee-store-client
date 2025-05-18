@@ -1,13 +1,46 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { Link } from "react-router";
+import Swal from "sweetalert2";
 
 const SignIn = () => {
-  const context = useContext(AuthContext);
-  console.log(context);
+  const { userLogin } = useContext(AuthContext);
+  // console.log(userLogin);
 
   const handleSubmitSingIn = (e) => {
     e.preventDefault();
-    const form = e.target;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log(email, password);
+
+    userLogin(email, password)
+      .then((res) => {
+        console.log("user after login: ", res);
+        const userInfo = {
+          email,
+          lastSignInTime: res.user?.metadata?.lastSignInTime,
+        };
+        fetch("http://localhost:3000/user", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userInfo),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            // console.log("after login", data);
+            if (data.modifiedCount) {
+              Swal.fire({
+                title: "User login successfully!",
+                icon: "success",
+                draggable: true,
+                timer: 1500,
+              });
+            }
+          });
+      })
+      .catch((error) => console.log("error", error));
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -16,21 +49,6 @@ const SignIn = () => {
           Sign In
         </h2>
         <form onSubmit={handleSubmitSingIn} className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              required
-              className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none border-gray-300"
-            />
-          </div>
           <div>
             <label
               htmlFor="email"
@@ -43,7 +61,7 @@ const SignIn = () => {
               name="email"
               id="email"
               required
-              className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none border-gray-300"
+              className="mt-1 text-gray-500 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none border-gray-300"
             />
           </div>
           <div>
@@ -58,7 +76,7 @@ const SignIn = () => {
               name="password"
               id="password"
               required
-              className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none border-gray-300"
+              className="mt-1 block text-gray-500 w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none border-gray-300"
             />
           </div>
           <button
@@ -70,9 +88,9 @@ const SignIn = () => {
         </form>
         <p className="mt-4 text-sm text-center text-gray-600">
           Already have an account?{" "}
-          <a href="#" className="text-blue-600 hover:underline">
+          <Link to={"/signup"} className="text-blue-600 hover:underline">
             Sing Up
-          </a>
+          </Link>
         </p>
       </div>
     </div>

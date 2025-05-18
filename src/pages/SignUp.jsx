@@ -16,12 +16,18 @@ const SignUp = () => {
     createUser(formObj.email, password)
       .then((data) => {
         console.log("user created successfully", data);
+        const userData = {
+          ...formObj,
+          creationTime: data.user.metadata?.creationTime,
+          lastSignInTime: data.user.metadata?.lastSignInTime,
+        };
+
         fetch("http://localhost:3000/user", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formObj),
+          body: JSON.stringify(userData),
         })
           .then((res) => res.json())
           .then((data) => {
