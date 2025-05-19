@@ -20,7 +20,9 @@ const router = createBrowserRouter([
       {
         index: true,
         loader: () => {
-          return fetch("http://localhost:3000/coffees")
+          return fetch(
+            "https://coffee-store-server-beryl-eight.vercel.app/coffees"
+          )
             .then((response) => {
               if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -37,7 +39,9 @@ const router = createBrowserRouter([
       {
         path: "coffeeDetails/:id",
         loader: ({ params }) => {
-          return fetch(`http://localhost:3000/coffees/${params.id}`)
+          return fetch(
+            `https://coffee-store-server-beryl-eight.vercel.app/coffees/${params.id}`
+          )
             .then((res) => {
               if (!res.ok) {
                 throw new Error(`Eroor status: ${res.status}`);
@@ -57,7 +61,9 @@ const router = createBrowserRouter([
       {
         path: "updateCoffee/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/coffees/${params.id}`),
+          fetch(
+            `https://coffee-store-server-beryl-eight.vercel.app/coffees/${params.id}`
+          ),
         element: <UpdateCoffee />,
       },
       {
@@ -70,7 +76,8 @@ const router = createBrowserRouter([
       },
       {
         path: "user",
-        loader: () => fetch("http://localhost:3000/user"),
+        loader: () =>
+          fetch("https://coffee-store-server-beryl-eight.vercel.app/user"),
         element: <Users />,
       },
     ],

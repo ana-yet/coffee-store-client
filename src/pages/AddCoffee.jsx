@@ -10,7 +10,7 @@ const AddCoffee = () => {
     console.log(newCoffee);
 
     // server side work here
-    fetch("http://localhost:3000/coffees", {
+    fetch("https://coffee-store-server-beryl-eight.vercel.app/coffees", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

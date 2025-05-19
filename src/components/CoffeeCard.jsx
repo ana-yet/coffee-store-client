@@ -20,9 +20,12 @@ const CoffeeCard = ({ coffees, handleDeleteCoffee }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/coffees/${id}`, {
-          method: "DELETE",
-        })
+        fetch(
+          `https://coffee-store-server-beryl-eight.vercel.app/coffees/${id}`,
+          {
+            method: "DELETE",
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             // console.log("after deleting data", data);
